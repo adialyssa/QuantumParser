@@ -72,7 +72,7 @@ class QuantumCalculator:
         self.print_banner()
         self.loading_bar()
         self.type_animation(f"{Colors.YELLOW}Welcome to QuantumParser{Colors.RESET}", 0.05)
-        self.type_animation(f"{Colors.GREEN}Ready for computation.{Colors.RESET}", 0.05)
+        self.type_animation(f"{Colors.GREEN}Ready for parsing.{Colors.RESET}", 0.05)
         print()
 
     def run(self):
