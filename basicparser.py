@@ -52,8 +52,11 @@ TT_PLUS = 'PLUS'
 TT_MINUS = 'MINUS'
 TT_MUL = 'MUL'
 TT_DIV = 'DIV'
+TT_EQUALS = 'EQUALS'
+TT_EXP = 'EXP'
 TT_LPAREN = 'LPAREN'
 TT_RPAREN = 'RPAREN'
+
 
 class quantum_token:
     def __init__(self, type_, value=None):
@@ -103,11 +106,17 @@ class quantum_lexer:
             elif self.current_char == ')':
                 tokens.append(quantum_token(TT_RPAREN))
                 self.advance()
+            elif self.current_char == '=':
+                tokens.append(quantum_token(TT_EQUALS))
+                self.advance()
+            elif self.current_char == '^':
+                tokens.append(quantum_token(TT_EXP))
+                self.advance()
             else:
                 pos_start = self.pos.copy()
                 char = self.current_char
                 self.advance()
-                return [], IllegalCharError(pos_start, self.pos, f" '{char}' ")
+                return [], IllegalCharError(f" '{char}' ",pos_start, self.pos)
         return tokens, None
 
     def make_number(self):
@@ -148,25 +157,37 @@ class Interpreter:
         return result
 
     def expr(self):
-        result = self.term()
+        left = self.term()
         while self.current_token is not None and self.current_token.type in (TT_PLUS, TT_MINUS):
             token = self.current_token
             self.advance()
             if token.type == TT_PLUS:
-                result += self.term()
+                left += self.term()
             elif token.type == TT_MINUS:
-                result -= self.term()
-        return result
+                left -= self.term()
+        if self.current_token is not None and self.current_token.type == TT_EQUALS:
+            self.advance()
+            right = self.expr()
+            return left == right
+        return left
 
     def term(self):
-        result = self.factor()
+        result = self.power()
         while self.current_token is not None and self.current_token.type in (TT_MUL, TT_DIV):
             token = self.current_token
             self.advance()
             if token.type == TT_MUL:
-                result *= self.factor()
+                result *= self.power()
             elif token.type == TT_DIV:
-                result /= self.factor()
+                result /= self.power()
+        return result
+    
+    def power(self):
+        result = self.factor()
+        while self.current_token is not None and self.current_token.type == TT_EXP:
+            token = self.current_token
+            self.advance()
+            result **= self.factor()
         return result
 
     def factor(self):
@@ -190,8 +211,8 @@ def run(fn, text):
     # Check for lexing errors
     if error: 
         return None, error
-
-    # Check if tokens were generated (NEW CODE BEFORE)
+    
+    # Check if tokens were generated 
     if not tokens:
         return None, Error(
             Position(0, 0, 0, fn, text),
@@ -204,6 +225,8 @@ def run(fn, text):
         # Initialize interpreter and parse tokens
         interpreter = Interpreter(tokens)
         result = interpreter.parse()
+        if isinstance(result,bool):
+            result = "True" if result else "False"
         return result, None
 
     except SyntaxError as e:
@@ -224,5 +247,6 @@ def run(fn, text):
             'Runtime Error',
             str(e)
         )
+        
         
 
