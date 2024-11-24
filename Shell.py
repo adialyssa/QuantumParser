@@ -39,7 +39,7 @@ class QuantumCalculator:
 {Colors.YELLOW}╔════════════════════╦══════════════════════════════════╗
 ║ Command            ║ Description                      ║
 ╠════════════════════╬══════════════════════════════════╣
-║ Basic Operations   ║ +, -, *, /                       ║
+║ Basic Operations   ║ +, -, *, /, =, ^                      ║
 ║ Parentheses        ║ ( )                              ║
 ║ clear              ║ Clear screen                     ║
 ║ exit               ║ Exit program                     ║
@@ -50,6 +50,8 @@ class QuantumCalculator:
 - Basic: 1 + 1
 - Complex: 2 * (3 + 4)
 - Decimal: 5.5 / 2.2
+- Equalities: 2 = 2 or 1+1 = 0+2
+- Exponents: 2^2 = 4
 """
         print(help_text)
 
@@ -57,7 +59,7 @@ class QuantumCalculator:
         print(f"\n{Colors.CYAN}Initializing Quantum Calculator...{Colors.RESET}")
         total = 30
         for i in range(total + 1):
-            # Creates prgress bar using block characters
+            # Creates progress bar using block characters
             progress = '█' * i + '░' * (total - i)
             percentage = (i * 100) // total
             sys.stdout.write(f'\r{Colors.CYAN}|{progress}| {percentage}%{Colors.RESET}')
