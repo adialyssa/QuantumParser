@@ -39,7 +39,7 @@ class QuantumCalculator:
 {Colors.YELLOW}╔════════════════════╦══════════════════════════════════╗
 ║ Command            ║ Description                      ║
 ╠════════════════════╬══════════════════════════════════╣
-║ Basic Operations   ║ +, -, *, /, =, ^                      ║
+║ Basic Operations   ║ +, -, *, /, =, ^                 ║
 ║ Parentheses        ║ ( )                              ║
 ║ clear              ║ Clear screen                     ║
 ║ exit               ║ Exit program                     ║
