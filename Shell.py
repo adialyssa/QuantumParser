@@ -51,7 +51,9 @@ class QuantumCalculator:
 - Complex: 2 * (3 + 4)
 - Decimal: 5.5 / 2.2
 - Equalities: 2 = 2 or 1+1 = 0+2
+- Inequalities: (3+4) < (5+6) or 3 > 2
 - Exponents: 2^2 = 4
+
 """
         print(help_text)
 
